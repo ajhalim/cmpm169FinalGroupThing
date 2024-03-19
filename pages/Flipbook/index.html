@@ -11,8 +11,8 @@
             margin: 0;
             padding: 0;
             background-color: #000000;
-            /*background-image: url('https://saliao.github.io/p5.js-files/sky-tree-hill.jpg'); /* Replace 'https://example.com/website-background-image.jpg' with your image URL */
             background-size: cover;
+            background-repeat: no-repeat;
             background-position: center;
         }
         #journal-container {
@@ -100,13 +100,56 @@
             'https://ajhalim.github.io/dreamJournal/pages/pageTwopt3/index.html',
             'https://ajhalim.github.io/dreamJournal/pages/pageTwopt2/index.html',
             'https://ajhalim.github.io/dreamJournal/pages/pageFive/index.html'
-            
         ];
 
         var fallingPages = [
             'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageThree/index.html',
             'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageFour/index.html'
         ];
+
+        var dreamscapes = [
+    {
+        name: "Underwater Wonderland",
+        background: "https://saliao.github.io/p5.js-files/underwater.jpg",
+        story: "You find yourself submerged in a vibrant underwater world. Colorful coral reefs sway gently with the current, and exotic fish dart around you. As you explore, you encounter mystical sea creatures like mermaids and sea dragons."
+    },
+    {
+        name: "Celestial Journey",
+        background: "https://saliao.github.io/p5.js-files/BlackHole2.jpg",
+        story: "You embark on a journey through the cosmos, navigating through mesmerizing nebulae and traversing asteroid fields. You witness breathtaking cosmic phenomena like supernovae and black holes, feeling the vastness of space around you."
+    },
+    {
+        name: "Fantasy Forest",
+        background: "https://saliao.github.io/p5.js-files/fantasyforest.jpg",
+        story: "You find yourself in a magical forest filled with enchanted flora and fauna. Sunlight filters through the lush canopy, casting dappled shadows on the forest floor. You hear the gentle rustle of leaves and the distant call of mystical creatures."
+    },
+    {
+        name: "Surreal Cityscape",
+        background: "https://saliao.github.io/p5.js-files/NeonCity.jpg",
+        story: "You wander through a surreal cityscape where buildings twist and morph in impossible ways. Neon lights illuminate the night sky, casting an eerie glow over the urban landscape. Strange characters populate the streets, and you can't shake the feeling that something extraordinary is about to happen."
+    },
+    {
+        name: "Timeless Library",
+        background: "https://saliao.github.io/p5.js-files/magiclibrary.jpg",
+        story: "You find yourself in a vast, ancient library filled with endless shelves of books. Each book contains a different story or piece of knowledge, waiting to be discovered. Dusty tomes line the shelves, and the scent of old parchment fills the air as you explore the labyrinthine corridors."
+    },
+    {
+        name: "Dreamy Wonderland",
+        background: "https://saliao.github.io/p5.js-files/Wonderland.jpg",
+        story: "You enter a dreamworld inspired by Alice in Wonderland, where bizarre landscapes and peculiar characters abound. You navigate through a topsy-turvy terrain filled with oversized objects and whimsical architecture. Each turn leads you deeper into the surreal wonderland, where nothing is quite as it seems."
+    },
+    {
+        name: "Haunted Dreamscape",
+        background: "https://saliao.github.io/p5.js-files/Hanting.jpg",
+        story: "You find yourself in a haunting dreamscape, where eerie landscapes are shrouded in mist and darkness. Ghostly apparitions drift through the fog, and mysterious whispers echo in the air. As you explore, you uncover the secrets of a long-forgotten past, haunted by the memories of those who came before."
+    },
+    {
+        name: "Technological Utopia",
+        background: "https://saliao.github.io/p5.js-files/future.jpg",
+        story: "You step into a futuristic utopia where advanced technology coexists with natural beauty. Skyscrapers tower above, their sleek surfaces reflecting the brilliance of the sun. Futuristic gadgets and flying vehicles zip through the air, creating a bustling metropolis of innovation and wonder."
+    }
+];
+
 
         var currentPageIndex = 0;
         var dayCounter = 1; // Initialize day counter
@@ -119,19 +162,20 @@
             var entryContainer = document.getElementById('entry-container');
             var optionsDiv = document.getElementById('options');
             var storyText = document.createElement('div');
-            var selectedPage;
 
             // Display different outcomes based on the chosen option
             switch (option) {
                 case 1:
-                    selectedPage = artPages[Math.floor(Math.random() * artPages.length)];
+                    var selectedPage = artPages[Math.floor(Math.random() * artPages.length)];
+                    showPage(selectedPage);
                     storyText.classList.add('entry');
-                    storyText.innerHTML = generateArtStory();
+                    storyText.innerHTML = generateArtDream().story;
                     break;
                 case 2:
-                    selectedPage = fallingPages[Math.floor(Math.random() * fallingPages.length)];
+                    var selectedDream = dreamscapes[Math.floor(Math.random() * dreamscapes.length)];
+                    document.body.style.backgroundImage = "url('" + selectedDream.background + "')";
                     storyText.classList.add('entry');
-                    storyText.innerHTML = generateFallingStory();
+                    storyText.innerHTML = selectedDream.story;
                     break;
                 default:
                     storyText.innerText = "Invalid option!";
@@ -163,9 +207,6 @@
 
             // Increment day counter
             dayCounter++;
-
-            // After selecting an option, update the web frame
-            showPage(selectedPage);
         }
 
         function showPage(url) {
@@ -175,7 +216,7 @@
         // Function to generate story options using Tracery
         function generateOptions() {
             var option1 = "Option 1: Explore the world of random art";
-            var option2 = "Option 2: Embrace the sensation of falling freely";
+            var option2 = "Option 2: Travel to another place";
 
             var optionsDiv = document.getElementById('options');
             optionsDiv.innerHTML = ''; // Clear previous options
@@ -197,8 +238,8 @@
             optionsDiv.appendChild(option2Div);
         }
 
-        // Generate a random art story using Tracery
-        function generateArtStory() {
+        // Generate a random art dream
+        function generateArtDream() {
             var grammar = {
                 "art_intro": ["You decide to explore the world of random art.", "You find yourself drawn to the world of abstract creativity.", "Colors swirl around you as you embark on an artistic adventure."],
                 "artist_encounter": ["As you walk through the colorful landscape, you encounter a mysterious artist.", "A figure emerges from the vibrant hues, inviting you to join them in their creative endeavor.", "A voice calls out to you, inviting you to explore the realm of imagination."],
@@ -216,27 +257,7 @@
                 storyGrammar.flatten("#artist_options#"),
                 storyGrammar.flatten("#art_outcome#")
             ];
-            return story.join('<br>');
-        }
-
-        // Generate a random falling story using Tracery
-        function generateFallingStory() {
-            var grammar = {
-                "falling_intro": ["You feel a sudden rush of wind as you realize you are falling through the sky.", "The ground rushes up to meet you as you plummet through the air.", "Gravity pulls you down into a free fall."],
-                "falling_options": ["What do you do? #falling_option1# or #falling_option2#"],
-                "falling_option1": ["Try to control your fall with graceful movements", "Spread your arms wide and embrace the sensation"],
-                "falling_option2": ["Close your eyes and enjoy the feeling of weightlessness", "Let out a joyful yell as you fall"],
-                "falling_outcome": ["You feel like a dancer, creating art with your every motion.", "The world becomes a blur of colors as you surrender to the sensation.", "Your heart races with excitement as you embrace the freedom of the fall."]
-            };
-
-            var tracery = window.tracery;
-            var storyGrammar = tracery.createGrammar(grammar);
-            var story = [
-                storyGrammar.flatten("#falling_intro#"),
-                storyGrammar.flatten("#falling_options#"),
-                storyGrammar.flatten("#falling_outcome#")
-            ];
-            return story.join('<br>');
+            return { story: story.join('<br>') };
         }
 
         // Initialize the story with generated options
