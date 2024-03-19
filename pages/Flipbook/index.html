@@ -131,7 +131,7 @@
     document.addEventListener('mouseup', function() {
         isDragging = false;
     });
-
+    /*
     var artPages = [
         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageOne/index.html',
         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageTwo/index.html',
@@ -141,7 +141,7 @@
         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageThree/index.html',
         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageFour/index.html'
     ];
-
+    */
     var fallingPages = [];
 
     var dreamscapes = [
@@ -151,7 +151,7 @@
             story: "You find yourself submerged in a vibrant underwater world. Colorful coral reefs sway gently with the current, and exotic fish dart around you. As you explore, you encounter mystical sea creatures like mermaids and sea dragons.",
             artPages: [
                 '',
-                ''
+                
             ]
         },
         {
@@ -180,7 +180,7 @@
             story: "You wander through a surreal cityscape where buildings twist and morph in impossible ways. Neon lights illuminate the night sky, casting an eerie glow over the urban landscape. Strange characters populate the streets, and you can't shake the feeling that something extraordinary is about to happen.",
             artPages: [
                 '',
-                ''
+                
             ]
         },
         {
@@ -207,7 +207,7 @@
             story: "You find yourself in a haunting dreamscape, where eerie landscapes are shrouded in mist and darkness. Ghostly apparitions drift through the fog, and mysterious whispers echo in the air. As you explore, you uncover the secrets of a long-forgotten past, haunted by the memories of those who came before.",
             artPages: [
                 'https://ajhalim.github.io/dreamJournal/pages/pageOne/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/pageOne/index.html'
+                
             ]
         },
         {
@@ -244,10 +244,11 @@
                     storyText.classList.add('entry');
                     storyText.innerHTML = generateArtDream().story;
                 } else {
-                    storyText.innerText = "No dream available!";
+                    storyText.innerText = "Dream not found!";
                 }
                 break;
             case 2:
+                document.getElementById('pageFrame').src = ""; // Clear the web container
                 var selectedDream = dreamscapes[Math.floor(Math.random() * dreamscapes.length)];
                 currentDreamscape = selectedDream; // Update the current dreamscape
                 document.body.style.backgroundImage = "url('" + selectedDream.background + "')";
