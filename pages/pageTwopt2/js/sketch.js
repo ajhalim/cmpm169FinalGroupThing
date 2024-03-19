@@ -4,7 +4,7 @@ let currentCamera;
 let plus = 200;
 
 function setup() {
-	createCanvas(1112, 834, WEBGL);
+	createCanvas(windowWidth, windowHeight, WEBGL);
 	colorMode(HSB);
 	angleMode(DEGREES);
 	stroke('brown');
