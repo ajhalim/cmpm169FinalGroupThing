@@ -3,50 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flip Book Thingy</title>
+    <title>Dream Journal</title>
+    <script src="https://cdn.rawgit.com/v21/tracery/master/tracery.js"></script>
+    <style>
+        body {
+            font-family: 'Indie Flower', cursive; /* Change font-family to 'Indie Flower' */
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            /*background-image: url('https://saliao.github.io/p5.js-files/sky-tree-hill.jpg'); /* Replace 'https://example.com/website-background-image.jpg' with your image URL */
+            background-size: cover;
+            background-position: center;
+        }
+        #journal-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            background-image: url('https://saliao.github.io/p5.js-files/dreamjournal.jpg'); /* Replace 'https://example.com/background-image.jpg' with your image URL */
+            background-size: cover;
+            background-position: center;
+            font-size: 18px;
+        }
+        #text-container {
+            flex: 1;
+            padding-right: 20px;
+        }
+        #entry-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 20px;
+            border-right: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .entry {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+        .entry:hover {
+            background-color: #f0f0f0;
+        }
+        .entry.active {
+            background-color: #cce5ff; /* Highlight color */
+        }
+        .entry-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .entry-date {
+            font-size: 18px;
+            color: #666;
+        }
+        #options {
+            margin-top: 20px;
+        }
+        .option {
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 20px;
+            color: blue;
+        }
+        #pageFrame {
+            width: 100%;
+            height: 400px;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Dream Journal</h1>
-    <button onclick="prevPage()">Previous</button>
-    <span id="pageNumber"></span>
-    <button onclick="nextPage()">Next</button>
+    <div id="journal-container">
+        <div id="text-container">
+            <h1>Dream Journal</h1>
+            <div id="entry-container"></div>
 
-    <div id="iframeContainer">
-        <iframe id="pageFrame" src="" frameborder="0" width="100%" height="800"></iframe>
+            <div id="options"></div>
+        </div>
+
+        <iframe id="pageFrame" src="" frameborder="0"></iframe>
     </div>
 
     <script>
-        var pages = ['https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageOne/index.html',
-         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageTwo/index.html',
-         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageThree/index.html',
-         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageFour/index.html'];
+        var artPages = [
+            'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageOne/index.html',
+            'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageTwo/index.html',
+            'https://ajhalim.github.io/dreamJournal/pages/pageTwopt3/index.html',
+            'https://ajhalim.github.io/dreamJournal/pages/pageTwopt2/index.html',
+            'https://ajhalim.github.io/dreamJournal/pages/pageFive/index.html'
+            
+        ];
+
+        var fallingPages = [
+            'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageThree/index.html',
+            'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageFour/index.html'
+        ];
+
         var currentPageIndex = 0;
+        var dayCounter = 1; // Initialize day counter
 
         function updatePageNumber() {
-            document.getElementById('pageNumber').innerText = "Page " + (currentPageIndex + 1) + " of " + pages.length;
+            document.getElementById('pageNumber').innerText = "Page " + (currentPageIndex + 1) + ", Day " + dayCounter;
         }
 
-        function nextPage() {
-            currentPageIndex = (currentPageIndex + 1) % pages.length;
-            showPage(pages[currentPageIndex]);
-            updatePageNumber();
-        }
+        function choosePath(option) {
+            var entryContainer = document.getElementById('entry-container');
+            var optionsDiv = document.getElementById('options');
+            var storyText = document.createElement('div');
+            var selectedPage;
 
-        function prevPage() {
-            currentPageIndex = (currentPageIndex - 1 + pages.length) % pages.length;
-            showPage(pages[currentPageIndex]);
-            updatePageNumber();
+            // Display different outcomes based on the chosen option
+            switch (option) {
+                case 1:
+                    selectedPage = artPages[Math.floor(Math.random() * artPages.length)];
+                    storyText.classList.add('entry');
+                    storyText.innerHTML = generateArtStory();
+                    break;
+                case 2:
+                    selectedPage = fallingPages[Math.floor(Math.random() * fallingPages.length)];
+                    storyText.classList.add('entry');
+                    storyText.innerHTML = generateFallingStory();
+                    break;
+                default:
+                    storyText.innerText = "Invalid option!";
+                    break;
+            }
+
+            // Create entry title and date
+            var entryTitle = document.createElement('div');
+            entryTitle.classList.add('entry-title');
+            entryTitle.innerText = "Dream Entry " + (entryContainer.childElementCount + 1);
+            storyText.insertBefore(entryTitle, storyText.firstChild);
+
+            var entryDate = document.createElement('div');
+            entryDate.classList.add('entry-date');
+            entryDate.innerText = new Date().toLocaleDateString();
+            storyText.insertBefore(entryDate, storyText.firstChild);
+
+            // Append the entry to the container
+            entryContainer.prepend(storyText);
+
+            // Remove 'active' class from all entries
+            var entries = document.querySelectorAll('.entry');
+            entries.forEach(function(entry) {
+                entry.classList.remove('active');
+            });
+
+            // Add 'active' class to the new entry
+            storyText.classList.add('active');
+
+            // Increment day counter
+            dayCounter++;
+
+            // After selecting an option, update the web frame
+            showPage(selectedPage);
         }
 
         function showPage(url) {
             document.getElementById('pageFrame').src = url;
         }
 
-        // Initial page display
-        showPage(pages[currentPageIndex]);
+        // Function to generate story options using Tracery
+        function generateOptions() {
+            var option1 = "Option 1: Explore the world of random art";
+            var option2 = "Option 2: Embrace the sensation of falling freely";
 
-        // Initial page number update
-        updatePageNumber();
+            var optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = ''; // Clear previous options
+
+            var option1Div = document.createElement('div');
+            option1Div.classList.add('option');
+            option1Div.innerText = option1;
+            option1Div.onclick = function() {
+                choosePath(1);
+            };
+            optionsDiv.appendChild(option1Div);
+
+            var option2Div = document.createElement('div');
+            option2Div.classList.add('option');
+            option2Div.innerText = option2;
+            option2Div.onclick = function() {
+                choosePath(2);
+            };
+            optionsDiv.appendChild(option2Div);
+        }
+
+        // Generate a random art story using Tracery
+        function generateArtStory() {
+            var grammar = {
+                "art_intro": ["You decide to explore the world of random art.", "You find yourself drawn to the world of abstract creativity.", "Colors swirl around you as you embark on an artistic adventure."],
+                "artist_encounter": ["As you walk through the colorful landscape, you encounter a mysterious artist.", "A figure emerges from the vibrant hues, inviting you to join them in their creative endeavor.", "A voice calls out to you, inviting you to explore the realm of imagination."],
+                "artist_options": ["They offer you a choice: #art_option1# or #art_option2#"],
+                "art_option1": ["Create a masterpiece together", "Collaborate on an experimental project"],
+                "art_option2": ["Observe their latest creation", "Join them in an art critique"],
+                "art_outcome": ["You feel a sense of accomplishment and wonder.", "The colors blend harmoniously, forming a mesmerizing pattern.", "Your mind is filled with inspiration and creativity."]
+            };
+
+            var tracery = window.tracery;
+            var storyGrammar = tracery.createGrammar(grammar);
+            var story = [
+                storyGrammar.flatten("#art_intro#"),
+                storyGrammar.flatten("#artist_encounter#"),
+                storyGrammar.flatten("#artist_options#"),
+                storyGrammar.flatten("#art_outcome#")
+            ];
+            return story.join('<br>');
+        }
+
+        // Generate a random falling story using Tracery
+        function generateFallingStory() {
+            var grammar = {
+                "falling_intro": ["You feel a sudden rush of wind as you realize you are falling through the sky.", "The ground rushes up to meet you as you plummet through the air.", "Gravity pulls you down into a free fall."],
+                "falling_options": ["What do you do? #falling_option1# or #falling_option2#"],
+                "falling_option1": ["Try to control your fall with graceful movements", "Spread your arms wide and embrace the sensation"],
+                "falling_option2": ["Close your eyes and enjoy the feeling of weightlessness", "Let out a joyful yell as you fall"],
+                "falling_outcome": ["You feel like a dancer, creating art with your every motion.", "The world becomes a blur of colors as you surrender to the sensation.", "Your heart races with excitement as you embrace the freedom of the fall."]
+            };
+
+            var tracery = window.tracery;
+            var storyGrammar = tracery.createGrammar(grammar);
+            var story = [
+                storyGrammar.flatten("#falling_intro#"),
+                storyGrammar.flatten("#falling_options#"),
+                storyGrammar.flatten("#falling_outcome#")
+            ];
+            return story.join('<br>');
+        }
+
+        // Initialize the story with generated options
+        generateOptions();
     </script>
 </body>
 </html>
