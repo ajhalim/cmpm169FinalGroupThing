@@ -7,14 +7,24 @@
     <script src="https://cdn.rawgit.com/v21/tracery/master/tracery.js"></script>
     <style>
         body {
-            font-family: 'Indie Flower', cursive; /* Change font-family to 'Indie Flower' */
+            font-family: 'Indie Flower', cursive;
             margin: 0;
             padding: 0;
             background-color: #000000;
             background-size: cover;
             background-repeat: no-repeat;
-            background-position: center;
+            overflow: hidden; /* Prevent scrollbars due to absolute positioning */
         }
+        #wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    background-size: cover; /* Ensure the background image covers the entire area */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+
         #journal-container {
             max-width: 800px;
             margin: 20px auto;
@@ -22,12 +32,12 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-wrap: wrap;
-            background-image: url('https://saliao.github.io/p5.js-files/dreamjournal.jpg'); /* Replace 'https://example.com/background-image.jpg' with your image URL */
+            background-image: url('https://saliao.github.io/p5.js-files/dreamjournal.jpg');
             background-size: cover;
             background-position: center;
             font-size: 18px;
+            cursor: move;
+            position: absolute;
         }
         #text-container {
             flex: 1;
@@ -51,7 +61,7 @@
             background-color: #f0f0f0;
         }
         .entry.active {
-            background-color: #cce5ff; /* Highlight color */
+            background-color: #cce5ff;
         }
         .entry-title {
             font-size: 24px;
@@ -80,79 +90,103 @@
         }
     </style>
      <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div id="journal-container">
-        <div id="text-container">
-            <h1>Dream Journal</h1>
-            <div id="entry-container"></div>
-
-            <div id="options"></div>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="journal-container">
+                <div id="text-container">
+                    <h1>Dream Journal</h1>
+                    <div id="entry-container"></div>
+                    <div id="options"></div>
+                </div>
+                <iframe id="pageFrame" src="" frameborder="0"></iframe>
+            </div>
         </div>
 
-        <iframe id="pageFrame" src="" frameborder="0"></iframe>
-    </div>
-
     <script>
+        var journalContainer = document.getElementById('journal-container');
+        var isDragging = false;
+        var initialX, initialY, offsetX, offsetY;
+
+        journalContainer.addEventListener('mousedown', function(event) {
+            isDragging = true;
+            offsetX = event.offsetX;
+            offsetY = event.offsetY;
+        });
+
+        document.addEventListener('mousemove', function(event) {
+            if (isDragging) {
+                var mouseX = event.clientX;
+                var mouseY = event.clientY;
+                var newPosX = mouseX - offsetX;
+                var newPosY = mouseY - offsetY;
+                journalContainer.style.left = newPosX + 'px';
+                journalContainer.style.top = newPosY + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+
         var artPages = [
             'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageOne/index.html',
             'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageTwo/index.html',
             'https://ajhalim.github.io/dreamJournal/pages/pageTwopt3/index.html',
             'https://ajhalim.github.io/dreamJournal/pages/pageTwopt2/index.html',
-            'https://ajhalim.github.io/dreamJournal/pages/pageFive/index.html'
-        ];
-
-        var fallingPages = [
+            'https://ajhalim.github.io/dreamJournal/pages/pageFive/index.html',
             'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageThree/index.html',
             'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageFour/index.html'
         ];
 
+        var fallingPages = [];
+
         var dreamscapes = [
-    {
-        name: "Underwater Wonderland",
-        background: "https://saliao.github.io/p5.js-files/underwater.jpg",
-        story: "You find yourself submerged in a vibrant underwater world. Colorful coral reefs sway gently with the current, and exotic fish dart around you. As you explore, you encounter mystical sea creatures like mermaids and sea dragons."
-    },
-    {
-        name: "Celestial Journey",
-        background: "https://saliao.github.io/p5.js-files/BlackHole2.jpg",
-        story: "You embark on a journey through the cosmos, navigating through mesmerizing nebulae and traversing asteroid fields. You witness breathtaking cosmic phenomena like supernovae and black holes, feeling the vastness of space around you."
-    },
-    {
-        name: "Fantasy Forest",
-        background: "https://saliao.github.io/p5.js-files/fantasyforest.jpg",
-        story: "You find yourself in a magical forest filled with enchanted flora and fauna. Sunlight filters through the lush canopy, casting dappled shadows on the forest floor. You hear the gentle rustle of leaves and the distant call of mystical creatures."
-    },
-    {
-        name: "Surreal Cityscape",
-        background: "https://saliao.github.io/p5.js-files/NeonCity.jpg",
-        story: "You wander through a surreal cityscape where buildings twist and morph in impossible ways. Neon lights illuminate the night sky, casting an eerie glow over the urban landscape. Strange characters populate the streets, and you can't shake the feeling that something extraordinary is about to happen."
-    },
-    {
-        name: "Timeless Library",
-        background: "https://saliao.github.io/p5.js-files/magiclibrary.jpg",
-        story: "You find yourself in a vast, ancient library filled with endless shelves of books. Each book contains a different story or piece of knowledge, waiting to be discovered. Dusty tomes line the shelves, and the scent of old parchment fills the air as you explore the labyrinthine corridors."
-    },
-    {
-        name: "Dreamy Wonderland",
-        background: "https://saliao.github.io/p5.js-files/Wonderland.jpg",
-        story: "You enter a dreamworld inspired by Alice in Wonderland, where bizarre landscapes and peculiar characters abound. You navigate through a topsy-turvy terrain filled with oversized objects and whimsical architecture. Each turn leads you deeper into the surreal wonderland, where nothing is quite as it seems."
-    },
-    {
-        name: "Haunted Dreamscape",
-        background: "https://saliao.github.io/p5.js-files/Hanting.jpg",
-        story: "You find yourself in a haunting dreamscape, where eerie landscapes are shrouded in mist and darkness. Ghostly apparitions drift through the fog, and mysterious whispers echo in the air. As you explore, you uncover the secrets of a long-forgotten past, haunted by the memories of those who came before."
-    },
-    {
-        name: "Technological Utopia",
-        background: "https://saliao.github.io/p5.js-files/future.jpg",
-        story: "You step into a futuristic utopia where advanced technology coexists with natural beauty. Skyscrapers tower above, their sleek surfaces reflecting the brilliance of the sun. Futuristic gadgets and flying vehicles zip through the air, creating a bustling metropolis of innovation and wonder."
-    }
-];
+            {
+                name: "Underwater Wonderland",
+                background: "https://saliao.github.io/p5.js-files/underwater.jpg",
+                story: "You find yourself submerged in a vibrant underwater world. Colorful coral reefs sway gently with the current, and exotic fish dart around you. As you explore, you encounter mystical sea creatures like mermaids and sea dragons."
+            },
+            {
+                name: "Celestial Journey",
+                background: "https://saliao.github.io/p5.js-files/BlackHole2.jpg",
+                story: "You embark on a journey through the cosmos, navigating through mesmerizing nebulae and traversing asteroid fields. You witness breathtaking cosmic phenomena like supernovae and black holes, feeling the vastness of space around you."
+            },
+            {
+                name: "Fantasy Forest",
+                background: "https://saliao.github.io/p5.js-files/fantasyforest.jpg",
+                story: "You find yourself in a magical forest filled with enchanted flora and fauna. Sunlight filters through the lush canopy, casting dappled shadows on the forest floor. You hear the gentle rustle of leaves and the distant call of mystical creatures."
+            },
+            {
+                name: "Surreal Cityscape",
+                background: "https://saliao.github.io/p5.js-files/NeonCity.jpg",
+                story: "You wander through a surreal cityscape where buildings twist and morph in impossible ways. Neon lights illuminate the night sky, casting an eerie glow over the urban landscape. Strange characters populate the streets, and you can't shake the feeling that something extraordinary is about to happen."
+            },
+            {
+                name: "Timeless Library",
+                background: "https://saliao.github.io/p5.js-files/magiclibrary.jpg",
+                story: "You find yourself in a vast, ancient library filled with endless shelves of books. Each book contains a different story or piece of knowledge, waiting to be discovered. Dusty tomes line the shelves, and the scent of old parchment fills the air as you explore the labyrinthine corridors."
+            },
+            {
+                name: "Dreamy Wonderland",
+                background: "https://saliao.github.io/p5.js-files/Wonderland.jpg",
+                story: "You enter a dreamworld inspired by Alice in Wonderland, where bizarre landscapes and peculiar characters abound. You navigate through a topsy-turvy terrain filled with oversized objects and whimsical architecture. Each turn leads you deeper into the surreal wonderland, where nothing is quite as it seems."
+            },
+            {
+                name: "Haunted Dreamscape",
+                background: "https://saliao.github.io/p5.js-files/Hanting.jpg",
+                story: "You find yourself in a haunting dreamscape, where eerie landscapes are shrouded in mist and darkness. Ghostly apparitions drift through the fog, and mysterious whispers echo in the air. As you explore, you uncover the secrets of a long-forgotten past, haunted by the memories of those who came before."
+            },
+            {
+                name: "Technological Utopia",
+                background: "https://saliao.github.io/p5.js-files/future.jpg",
+                story: "You step into a futuristic utopia where advanced technology coexists with natural beauty. Skyscrapers tower above, their sleek surfaces reflecting the brilliance of the sun. Futuristic gadgets and flying vehicles zip through the air, creating a bustling metropolis of innovation and wonder."
+            }
+        ];
 
 
         var currentPageIndex = 0;
-        var dayCounter = 1; // Initialize day counter
+        var dayCounter = 1;
 
         function updatePageNumber() {
             document.getElementById('pageNumber').innerText = "Page " + (currentPageIndex + 1) + ", Day " + dayCounter;
@@ -163,7 +197,6 @@
             var optionsDiv = document.getElementById('options');
             var storyText = document.createElement('div');
 
-            // Display different outcomes based on the chosen option
             switch (option) {
                 case 1:
                     var selectedPage = artPages[Math.floor(Math.random() * artPages.length)];
@@ -182,7 +215,6 @@
                     break;
             }
 
-            // Create entry title and date
             var entryTitle = document.createElement('div');
             entryTitle.classList.add('entry-title');
             entryTitle.innerText = "Dream Entry " + (entryContainer.childElementCount + 1);
@@ -193,19 +225,15 @@
             entryDate.innerText = new Date().toLocaleDateString();
             storyText.insertBefore(entryDate, storyText.firstChild);
 
-            // Append the entry to the container
             entryContainer.prepend(storyText);
 
-            // Remove 'active' class from all entries
             var entries = document.querySelectorAll('.entry');
             entries.forEach(function(entry) {
                 entry.classList.remove('active');
             });
 
-            // Add 'active' class to the new entry
             storyText.classList.add('active');
 
-            // Increment day counter
             dayCounter++;
         }
 
@@ -213,13 +241,12 @@
             document.getElementById('pageFrame').src = url;
         }
 
-        // Function to generate story options using Tracery
         function generateOptions() {
             var option1 = "Option 1: Explore the world of random art";
             var option2 = "Option 2: Travel to another place";
 
             var optionsDiv = document.getElementById('options');
-            optionsDiv.innerHTML = ''; // Clear previous options
+            optionsDiv.innerHTML = '';
 
             var option1Div = document.createElement('div');
             option1Div.classList.add('option');
@@ -238,7 +265,6 @@
             optionsDiv.appendChild(option2Div);
         }
 
-        // Generate a random art dream
         function generateArtDream() {
             var grammar = {
                 "art_intro": ["You decide to explore the world of random art.", "You find yourself drawn to the world of abstract creativity.", "Colors swirl around you as you embark on an artistic adventure."],
@@ -260,7 +286,6 @@
             return { story: story.join('<br>') };
         }
 
-        // Initialize the story with generated options
         generateOptions();
     </script>
 </body>
