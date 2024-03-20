@@ -4,7 +4,7 @@
 
 let img;
 let sw = 10;
-const reSize = 1;
+const reSize = 0.14;
 
 function preload() {
   img = loadImage(
