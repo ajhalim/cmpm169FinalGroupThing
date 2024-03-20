@@ -1,76 +1,117 @@
-let shapes = []; // Array to hold shape objects
-let lastSpawnTime = 0; // Variable to hold the time of the last shape spawn
-let minTimeDelay = 75; // Minimum time delay between spawning shapes
-let maxTimeDelay = 100; // Maximum time delay between spawning shapes
-let moveDirection = 1; // Movement direction of the objects, initially downwards
+let leaves = [];
+let bgGraphics; // Graphics buffer for background
+let nextLeafSetTime = 0; // Time to start the next set of leaves falling
+let leafSetInterval = 3000; // Interval between each set of leaves falling (in milliseconds)
 
 function preload(){
-    message = loadFont('font.ttf');
+  message = loadFont('font.ttf');
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
+  createCanvas(800, 600, WEBGL);
+  bgGraphics = createGraphics(width, height); // Create graphics buffer
+  bgGraphics.background(140);
+  for (let i = 0; i < 1000; i++) { // Create random green circles
+    let x = random(bgGraphics.width);
+    let y = random(bgGraphics.height);
+    let size = random(10, 50);
+    let green = random(100, 200);
+    bgGraphics.fill(0, green, 0);
+    bgGraphics.noStroke();
+    bgGraphics.ellipse(x, y, size, size);
+  }
+  bgGraphics.filter(BLUR, 10); // Apply blur effect
 }
 
 function draw() {
-  background(0);
-  textSize(20);
+  // Draw background from graphics buffer
+  image(bgGraphics, -width / 2, -height / 2);
+  
+  push();
+  // Draw tree trunk
+  stroke(100, 50, 10);
+  fill(139, 69, 19);
+  cylinder(30, 600);
+  translate(172,0);
+  cylinder(30, 600);
+  translate(-400,0);
+  cylinder(30, 600);
+  pop();
+  
   textFont(message);
+  textSize(15);
   textAlign(CENTER,CENTER);
-  text("scroll to change direction",0,-350);
-  // Translate to the center of the screen
-  translate(0, 0, -500);
+  fill(225);
+  text("click to change the speed", -400, -200);
 
-  // Check if it's time to spawn a new shape
-  if (millis() - lastSpawnTime > random(minTimeDelay, maxTimeDelay)) {
-    // Add a new shape to the array
-    shapes.push(new Shape(random(-width/2, width/2), random(-height/2, height/2), moveDirection));
-    // Update the last spawn time
-    lastSpawnTime = millis();
+  // Draw leaves
+  for (let leaf of leaves) {
+    leaf.update();
+    leaf.display();
   }
 
-  // Loop through the shapes array and render each shape
-  for (let i = 0; i < shapes.length; i++) {
-    shapes[i].update();
-    shapes[i].display();
+  // Check if it's time to start the next set of leaves falling
+  if (millis() > nextLeafSetTime) {
+    addLeafSet();
+    nextLeafSetTime = millis() + leafSetInterval; // Set time for the next leaf set
   }
 }
 
-function mouseWheel(event) {
-  // Change the movement direction of the objects based on mouse wheel direction
-  if (event.deltaY > 0) {
-    moveDirection = 1; // Move downwards if mouse wheel scrolls down
-  } else if (event.deltaY < 0) {
-    moveDirection = -1; // Move upwards if mouse wheel scrolls up
+function addLeafSet() {
+  let numLeaves = 100; // Number of leaves in each set
+  for (let i = 0; i < numLeaves; i++) {
+    leaves.push(new Leaf());
   }
 }
 
-// Shape class
-class Shape {
-  constructor(x, y, direction) {
-    this.x = x;
-    this.y = y;
-    this.z = 0;
-    this.speed = 20 * direction; // Speed at which the shape moves
+class Leaf {
+  constructor() {
+    this.x = random(-width / 2, width / 2);
+    this.y = -height / 2;
+    this.z = random(-300, 300);
+    this.size = random(10, 30);
+    this.speed = random(1, 3);
+    this.rotationSpeed = random(-0.01, 0.01); // Adjusted rotation speed
+    this.color = color(random(100, 200), random(100, 200), 0);
   }
 
-  // Update the position of the shape
   update() {
-    this.z += this.speed;
-    // If the shape goes off the screen, remove it from the array
-    if (this.z > height + 500 || this.z < -height) {
-      let index = shapes.indexOf(this);
-      shapes.splice(index, 1);
+    this.y += this.speed;
+    if (this.y > height / 2) {
+      this.y = -height / 2;
+      this.x = random(-width / 2, width / 2);
+      this.z = random(-500, 1000);
     }
   }
 
-  // Display the shape
   display() {
     push();
     translate(this.x, this.y, this.z);
-    fill(255);
+    rotateZ(frameCount * this.rotationSpeed);
+    fill(this.color);
     noStroke();
-    box(10, 10, 200);
+    ellipse(0, 0, this.size, this.size / 2);
     pop();
+  }
+
+  // Function to change speed when the mouse is clicked
+  changeSpeed(newSpeed) {
+    this.speed = newSpeed;
+  }
+}
+
+// Event handler for mouse click
+function mouseClicked() {
+  let newSpeed = random(1, 3); // Generate a new random speed
+  // Change the speed of each leaf
+  for (let leaf of leaves) {
+    leaf.changeSpeed(newSpeed);
+  }
+}
+
+// Event handler for key press
+function keyPressed() {
+  if (key === 's' || key === 'S') {
+    saveCanvas('falling_leaves', 'jpg'); // Save canvas as JPEG image
   }
 }
