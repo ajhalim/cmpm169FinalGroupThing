@@ -443,6 +443,15 @@ function choosePath(option) {
         showPage(selectedPage.url);
         storyText.classList.add("entry");
         storyText.innerHTML = generateArtDream().story;
+        
+        // Adding artist button
+        var artistButton = document.createElement("span");
+        artistButton.classList.add("artist-button");
+        artistButton.innerText = "Artist: " + selectedPage.artist;
+        artistButton.onclick = function () {
+          window.open(selectedPage.source, '_blank');
+        };
+        storyText.appendChild(artistButton);
       } else {
         storyText.innerText = "Dream not found!";
       }
@@ -476,15 +485,6 @@ function choosePath(option) {
   entryDate.innerText = new Date().toLocaleDateString();
   storyText.insertBefore(entryDate, storyText.firstChild);
 
-  // Adding artist button
-  var artistButton = document.createElement("span");
-  artistButton.classList.add("artist-button");
-  artistButton.innerText = "Artist: " + selectedPage.artist;
-  artistButton.onclick = function () {
-    window.open(selectedPage.source, '_blank');
-  };
-  storyText.appendChild(artistButton);
-
   entryContainer.prepend(storyText);
 
   var entries = document.querySelectorAll(".entry");
@@ -496,6 +496,7 @@ function choosePath(option) {
 
   dayCounter++;
 }
+
 
 function showPage(url) {
   document.getElementById("pageFrame").src = url;
