@@ -450,6 +450,9 @@ function playAudio(audioUrl) {
 }
 
 // Function to choose a path and play corresponding audio
+var lastSelectedDreamscape = null;
+var lastSelectedArtIndex = -1;
+
 function choosePath(option) {
   var entryContainer = document.getElementById("entry-container");
   var optionsDiv = document.getElementById("options");
@@ -458,10 +461,11 @@ function choosePath(option) {
   switch (option) {
     case 1:
       if (currentDreamscape) {
-        var selectedPage =
-          currentDreamscape.artPages[
-            Math.floor(Math.random() * currentDreamscape.artPages.length)
-          ];
+        // Select a random art page index that is not the same as the last selected one
+        var artIndex = getRandomArtIndex();
+        lastSelectedArtIndex = artIndex;
+
+        var selectedPage = currentDreamscape.artPages[artIndex];
         showPage(selectedPage.url);
         storyText.classList.add("entry");
         storyText.innerHTML = generateArtDream().story;
@@ -480,8 +484,12 @@ function choosePath(option) {
       break;
     case 2:
       document.getElementById("pageFrame").src = ""; // Clear the web container
-      var selectedDream =
-        dreamscapes[Math.floor(Math.random() * dreamscapes.length)];
+      
+      // Select a dreamscape that is not the same as the last selected one
+      var dreamIndex = getRandomDreamscapeIndex();
+      lastSelectedDreamscape = dreamIndex;
+      
+      var selectedDream = dreamscapes[dreamIndex];
       currentDreamscape = selectedDream; // Update the current dreamscape
       document.body.style.backgroundImage =
         "url('" + selectedDream.background + "')";
@@ -520,6 +528,24 @@ function choosePath(option) {
   storyText.classList.add("active");
 
   dayCounter++;
+}
+
+// Function to select a random dreamscape index that is not the same as the last selected one
+function getRandomDreamscapeIndex() {
+  var newIndex = Math.floor(Math.random() * dreamscapes.length);
+  while (newIndex === lastSelectedDreamscape) {
+    newIndex = Math.floor(Math.random() * dreamscapes.length);
+  }
+  return newIndex;
+}
+
+// Function to select a random art page index that is not the same as the last selected one
+function getRandomArtIndex() {
+  var newIndex = Math.floor(Math.random() * currentDreamscape.artPages.length);
+  while (newIndex === lastSelectedArtIndex) {
+    newIndex = Math.floor(Math.random() * currentDreamscape.artPages.length);
+  }
+  return newIndex;
 }
 
 
