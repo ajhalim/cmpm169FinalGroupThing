@@ -8,8 +8,8 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(800, 600, WEBGL);
-  bgGraphics = createGraphics(width, height); // Create graphics buffer
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  bgGraphics = createGraphics(windowWidth, windowHeight); // Create graphics buffer
   bgGraphics.background(140);
   for (let i = 0; i < 1000; i++) { // Create random green circles
     let x = random(bgGraphics.width);
