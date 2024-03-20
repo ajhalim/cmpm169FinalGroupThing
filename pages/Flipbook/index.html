@@ -1,137 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dream Journal</title>
     <script src="https://cdn.rawgit.com/v21/tracery/master/tracery.js"></script>
     <style>
-        body {
-            font-family: 'Indie Flower', cursive;
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-            background-size: cover;
-            background-repeat: no-repeat;
-            overflow: hidden; /* Prevent scrollbars due to absolute positioning */
-        }
-        #wrapper {
-            width: 100%;
-            height: 100%;
-            background-color: #000000;
-            background-size: cover; /* Ensure the background image covers the entire area */
-            background-repeat: no-repeat;
-            background-position: center;
-            position: relative;
-        }
-        #journal-container {
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-image: url('https://saliao.github.io/p5.js-files/dreamjournal.jpg');
-            background-size: cover;
-            background-position: center;
-            font-size: 18px;
-            cursor: move;
-            position: absolute;
-        }
-        #text-container {
-            padding-right: 20px;
-        }
-        #entry-container {
-            max-height: 200px;
-            overflow-y: auto;
-            padding-right: 20px;
-            border-right: 1px solid #ddd;
-            margin-bottom: 20px;
-        }
-        .entry {
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-            font-size: 18px;
-            border-bottom: 1px solid #ddd;
-            transition: background-color 0.3s ease;
-        }
-        .entry:hover {
-            background-color: #f0f0f0;
-        }
-        .entry.active {
-            background-color: #cce5ff;
-        }
-        .entry-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .entry-date {
-            font-size: 18px;
-            color: #666;
-        }
-        #options {
-            margin-top: 20px;
-        }
-        .option {
-            margin-top: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 20px;
-            color: blue;
-        }
-        #pageFrame {
-            width: 100%;
-            height: 500px;
-            border: none;
-            margin-top: 20px;
-        }
-        h1 {
-            margin: 0;
-            padding: 0;
-            font-size: 32px;
-        }
+      body {
+        font-family: "Indie Flower", cursive;
+        margin: 0;
+        padding: 0;
+        background-color: #000000;
+        background-size: cover;
+        background-repeat: no-repeat;
+        overflow: hidden; /* Prevent scrollbars due to absolute positioning */
+      }
+      #wrapper {
+        width: 100%;
+        height: 100%;
+        background-color: #000000;
+        background-size: cover; /* Ensure the background image covers the entire area */
+        background-repeat: no-repeat;
+        background-position: center;
+        position: relative;
+      }
+      #journal-container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-image: url("https://saliao.github.io/p5.js-files/dreamjournal.jpg");
+        background-size: cover;
+        background-position: center;
+        font-size: 18px;
+        cursor: move;
+        position: absolute;
+      }
+      #text-container {
+        padding-right: 20px;
+      }
+      #entry-container {
+        max-height: 200px;
+        overflow-y: auto;
+        padding-right: 20px;
+        border-right: 1px solid #ddd;
+        margin-bottom: 20px;
+      }
+      .entry {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s ease;
+      }
+      .entry:hover {
+        background-color: #f0f0f0;
+      }
+      .entry.active {
+        background-color: #cce5ff;
+      }
+      .entry-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .entry-date {
+        font-size: 18px;
+        color: #666;
+      }
+      #options {
+        margin-top: 20px;
+      }
+      .option {
+        margin-top: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 20px;
+        color: blue;
+      }
+      #pageFrame {
+        width: 100%;
+        height: 500px;
+        border: none;
+        margin-top: 20px;
+      }
+      h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 32px;
+      }
     </style>
-     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div id="wrapper">
-        <div id="journal-container">
-            <h1>Dream Journal</h1>
-            <div id="text-container">
-                <div id="entry-container"></div>
-                <div id="options"></div>
-            </div>
-            <iframe id="pageFrame" src="" frameborder="0"></iframe>
+      <div id="journal-container">
+        <h1>Dream Journal</h1>
+        <div id="text-container">
+          <div id="entry-container"></div>
+          <div id="options"></div>
         </div>
+        <iframe id="pageFrame" src="" frameborder="0"></iframe>
+      </div>
     </div>
 
-<script>
-    var journalContainer = document.getElementById('journal-container');
-    var isDragging = false;
-    var initialX, initialY, offsetX, offsetY;
+    <script>
+      var journalContainer = document.getElementById("journal-container");
+      var isDragging = false;
+      var initialX, initialY, offsetX, offsetY;
 
-    journalContainer.addEventListener('mousedown', function(event) {
+      journalContainer.addEventListener("mousedown", function (event) {
         isDragging = true;
         offsetX = event.offsetX;
         offsetY = event.offsetY;
-    });
+      });
 
-    document.addEventListener('mousemove', function(event) {
+      document.addEventListener("mousemove", function (event) {
         if (isDragging) {
-            var mouseX = event.clientX;
-            var mouseY = event.clientY;
-            var newPosX = mouseX - offsetX;
-            var newPosY = mouseY - offsetY;
-            journalContainer.style.left = newPosX + 'px';
-            journalContainer.style.top = newPosY + 'px';
+          var mouseX = event.clientX;
+          var mouseY = event.clientY;
+          var newPosX = mouseX - offsetX;
+          var newPosY = mouseY - offsetY;
+          journalContainer.style.left = newPosX + "px";
+          journalContainer.style.top = newPosY + "px";
         }
-    });
+      });
 
-    document.addEventListener('mouseup', function() {
+      document.addEventListener("mouseup", function () {
         isDragging = false;
-    });
-    /*
+      });
+      /*
     var artPages = [
         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageOne/index.html',
         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageTwo/index.html',
@@ -142,199 +145,232 @@
         'https://sushisuwa.github.io/cmpm169FinalGroupThing/pages/pageFour/index.html'
     ];
     */
-    var fallingPages = [];
+      var fallingPages = [];
 
-    var dreamscapes = [
+      var dreamscapes = [
         {
-            name: "Underwater Wonderland",
-            background: "https://saliao.github.io/p5.js-files/underwater.jpg",
-            story: "You find yourself submerged in a vibrant underwater world. Colorful coral reefs sway gently with the current, and exotic fish dart around you. As you explore, you encounter mystical sea creatures like mermaids and sea dragons.",
-            artPages: [
-                '',
-                
-            ]
+          name: "Underwater Wonderland",
+          background: "https://saliao.github.io/p5.js-files/underwater.jpg",
+          story:
+            "You find yourself submerged in a vibrant underwater world. Colorful coral reefs sway gently with the current, and exotic fish dart around you. As you explore, you encounter mystical sea creatures like mermaids and sea dragons.",
+          artPages: [
+    
+            "https://ajhalim.github.io/dreamJournal/pages/Shark/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/Underwater_Martine/index.html",
+          ],
         },
         {
-            name: "Celestial Journey",
-            background: "https://saliao.github.io/p5.js-files/BlackHole2.jpg",
-            story: "You embark on a journey through the cosmos, navigating through mesmerizing nebulae and traversing asteroid fields. You witness breathtaking cosmic phenomena like supernovae and black holes, feeling the vastness of space around you.",
-            artPages: [
-                'https://ajhalim.github.io/dreamJournal/pages/pageTwopt2/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/pageTwopt3/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/pageFive/index.html'
-            ]
+          name: "Celestial Journey",
+          background: "https://saliao.github.io/p5.js-files/BlackHole2.jpg",
+          story:
+            "You embark on a journey through the cosmos, navigating through mesmerizing nebulae and traversing asteroid fields. You witness breathtaking cosmic phenomena like supernovae and black holes, feeling the vastness of space around you.",
+          artPages: [
+            "https://ajhalim.github.io/dreamJournal/pages/pageTwopt2/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/pageTwopt3/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/pageFive/index.html",
+          ],
         },
         // Add other dreamscapes here with their unique artPages
 
         {
-            name: "Fantasy Forest",
-            background: "https://saliao.github.io/p5.js-files/fantasyforest.jpg",
-            story: "You find yourself in a magical forest filled with enchanted flora and fauna. Sunlight filters through the lush canopy, casting dappled shadows on the forest floor. You hear the gentle rustle of leaves and the distant call of mystical creatures.",
-            artPages: [
-                'https://ajhalim.github.io/dreamJournal/pages/pageTwo/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/FlowersW/index.html',
-            ]
+          name: "Fantasy Forest",
+          background: "https://saliao.github.io/p5.js-files/fantasyforest.jpg",
+          story:
+            "You find yourself in a magical forest filled with enchanted flora and fauna. Sunlight filters through the lush canopy, casting dappled shadows on the forest floor. You hear the gentle rustle of leaves and the distant call of mystical creatures.",
+          artPages: [
+            "https://ajhalim.github.io/dreamJournal/pages/pageTwo/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/FlowersW/index.html",
+          ],
         },
         {
-            name: "Surreal Cityscape",
-            background: "https://saliao.github.io/p5.js-files/NeonCity.jpg",
-            story: "You wander through a surreal cityscape where buildings twist and morph in impossible ways. Neon lights illuminate the night sky, casting an eerie glow over the urban landscape. Strange characters populate the streets, and you can't shake the feeling that something extraordinary is about to happen.",
-            artPages: [
-                '',
-                
-            ]
+          name: "Surreal Cityscape",
+          background: "https://saliao.github.io/p5.js-files/NeonCity.jpg",
+          story:
+            "You wander through a surreal cityscape where buildings twist and morph in impossible ways. Neon lights illuminate the night sky, casting an eerie glow over the urban landscape. Strange characters populate the streets, and you can't shake the feeling that something extraordinary is about to happen.",
+          artPages: [""],
         },
         {
-            name: "Timeless Library",
-            background: "https://saliao.github.io/p5.js-files/magiclibrary.jpg",
-            story: "You find yourself in a vast, ancient library filled with endless shelves of books. Each book contains a different story or piece of knowledge, waiting to be discovered. Dusty tomes line the shelves, and the scent of old parchment fills the air as you explore the labyrinthine corridors.",
-            artPages: [
-                'https://ajhalim.github.io/dreamJournal/pages/pageFour/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/pageFour/index.html'
-            ]
+          name: "Timeless Library",
+          background: "https://saliao.github.io/p5.js-files/magiclibrary.jpg",
+          story:
+            "You find yourself in a vast, ancient library filled with endless shelves of books. Each book contains a different story or piece of knowledge, waiting to be discovered. Dusty tomes line the shelves, and the scent of old parchment fills the air as you explore the labyrinthine corridors.",
+          artPages: [
+            "https://ajhalim.github.io/dreamJournal/pages/pageFour/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/pageFour/index.html",
+          ],
         },
         {
-            name: "Dreamy Wonderland",
-            background: "https://saliao.github.io/p5.js-files/Wonderland.jpg",
-            story: "You enter a dreamworld inspired by Alice in Wonderland, where bizarre landscapes and peculiar characters abound. You navigate through a topsy-turvy terrain filled with oversized objects and whimsical architecture. Each turn leads you deeper into the surreal wonderland, where nothing is quite as it seems.",
-            artPages: [
-                'https://ajhalim.github.io/dreamJournal/pages/pageThree/index.html',
-                
-            ]
+          name: "Dreamy Wonderland",
+          background: "https://saliao.github.io/p5.js-files/Wonderland.jpg",
+          story:
+            "You enter a dreamworld inspired by Alice in Wonderland, where bizarre landscapes and peculiar characters abound. You navigate through a topsy-turvy terrain filled with oversized objects and whimsical architecture. Each turn leads you deeper into the surreal wonderland, where nothing is quite as it seems.",
+          artPages: [
+            "https://ajhalim.github.io/dreamJournal/pages/pageThree/index.html",
+          ],
         },
         {
-            name: "Haunted Dreamscape",
-            background: "https://saliao.github.io/p5.js-files/Hanting.jpg",
-            story: "You find yourself in a haunting dreamscape, where eerie landscapes are shrouded in mist and darkness. Ghostly apparitions drift through the fog, and mysterious whispers echo in the air. As you explore, you uncover the secrets of a long-forgotten past, haunted by the memories of those who came before.",
-            artPages: [
-                'https://ajhalim.github.io/dreamJournal/pages/pageOne/index.html',
-                
-            ]
+          name: "Haunted Dreamscape",
+          background: "https://saliao.github.io/p5.js-files/Hanting.jpg",
+          story:
+            "You find yourself in a haunting dreamscape, where eerie landscapes are shrouded in mist and darkness. Ghostly apparitions drift through the fog, and mysterious whispers echo in the air. As you explore, you uncover the secrets of a long-forgotten past, haunted by the memories of those who came before.",
+          artPages: [
+            "https://ajhalim.github.io/dreamJournal/pages/pageOne/index.html",
+          ],
         },
         {
-            name: "Technological Utopia",
-            background: "https://saliao.github.io/p5.js-files/future.jpg",
-            story: "You step into a futuristic utopia where advanced technology coexists with natural beauty. Skyscrapers tower above, their sleek surfaces reflecting the brilliance of the sun. Futuristic gadgets and flying vehicles zip through the air, creating a bustling metropolis of innovation and wonder.",
-            artPages: [
-                'https://ajhalim.github.io/dreamJournal/pages/pageSix/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/TriangleFractals/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/Utopia230223a/index.html',
-                'https://ajhalim.github.io/dreamJournal/pages/future_city/index.html'
-            ]
-        }
-    ];
-    
+          name: "Technological Utopia",
+          background: "https://saliao.github.io/p5.js-files/future.jpg",
+          story:
+            "You step into a futuristic utopia where advanced technology coexists with natural beauty. Skyscrapers tower above, their sleek surfaces reflecting the brilliance of the sun. Futuristic gadgets and flying vehicles zip through the air, creating a bustling metropolis of innovation and wonder.",
+          artPages: [
+            "https://ajhalim.github.io/dreamJournal/pages/pageSix/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/TriangleFractals/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/Utopia230223a/index.html",
+            "https://ajhalim.github.io/dreamJournal/pages/future_city/index.html",
+          ],
+        },
+      ];
 
-    var currentDreamscape = null; // Variable to store the current dreamscape
+      var currentDreamscape = null; // Variable to store the current dreamscape
 
-    var currentPageIndex = 0;
-    var dayCounter = 1;
+      var currentPageIndex = 0;
+      var dayCounter = 1;
 
-    function updatePageNumber() {
-        document.getElementById('pageNumber').innerText = "Page " + (currentPageIndex + 1) + ", Day " + dayCounter;
-    }
+      function updatePageNumber() {
+        document.getElementById("pageNumber").innerText =
+          "Page " + (currentPageIndex + 1) + ", Day " + dayCounter;
+      }
 
-    function choosePath(option) {
-        var entryContainer = document.getElementById('entry-container');
-        var optionsDiv = document.getElementById('options');
-        var storyText = document.createElement('div');
+      function choosePath(option) {
+        var entryContainer = document.getElementById("entry-container");
+        var optionsDiv = document.getElementById("options");
+        var storyText = document.createElement("div");
 
         switch (option) {
-            case 1:
-                if (currentDreamscape) {
-                    var selectedPage = currentDreamscape.artPages[Math.floor(Math.random() * currentDreamscape.artPages.length)];
-                    showPage(selectedPage);
-                    storyText.classList.add('entry');
-                    storyText.innerHTML = generateArtDream().story;
-                } else {
-                    storyText.innerText = "Dream not found!";
-                }
-                break;
-            case 2:
-                document.getElementById('pageFrame').src = ""; // Clear the web container
-                var selectedDream = dreamscapes[Math.floor(Math.random() * dreamscapes.length)];
-                currentDreamscape = selectedDream; // Update the current dreamscape
-                document.body.style.backgroundImage = "url('" + selectedDream.background + "')";
-                storyText.classList.add('entry');
-                storyText.innerHTML = selectedDream.story;
-                break;
-            default:
-                storyText.innerText = "Invalid option!";
-                break;
+          case 1:
+            if (currentDreamscape) {
+              var selectedPage =
+                currentDreamscape.artPages[
+                  Math.floor(Math.random() * currentDreamscape.artPages.length)
+                ];
+              showPage(selectedPage);
+              storyText.classList.add("entry");
+              storyText.innerHTML = generateArtDream().story;
+            } else {
+              storyText.innerText = "Dream not found!";
+            }
+            break;
+          case 2:
+            document.getElementById("pageFrame").src = ""; // Clear the web container
+            var selectedDream =
+              dreamscapes[Math.floor(Math.random() * dreamscapes.length)];
+            currentDreamscape = selectedDream; // Update the current dreamscape
+            document.body.style.backgroundImage =
+              "url('" + selectedDream.background + "')";
+            storyText.classList.add("entry");
+            storyText.innerHTML = selectedDream.story;
+            break;
+          default:
+            storyText.innerText = "Invalid option!";
+            break;
         }
 
-        var entryTitle = document.createElement('div');
-        entryTitle.classList.add('entry-title');
-        entryTitle.innerText = "Dream Entry " + (entryContainer.childElementCount + 1) + ": " + currentDreamscape.name;
+        var entryTitle = document.createElement("div");
+        entryTitle.classList.add("entry-title");
+        entryTitle.innerText =
+          "Dream Entry " +
+          (entryContainer.childElementCount + 1) +
+          ": " +
+          currentDreamscape.name;
         storyText.insertBefore(entryTitle, storyText.firstChild);
 
-        var entryDate = document.createElement('div');
-        entryDate.classList.add('entry-date');
+        var entryDate = document.createElement("div");
+        entryDate.classList.add("entry-date");
         entryDate.innerText = new Date().toLocaleDateString();
         storyText.insertBefore(entryDate, storyText.firstChild);
 
         entryContainer.prepend(storyText);
 
-        var entries = document.querySelectorAll('.entry');
-        entries.forEach(function(entry) {
-            entry.classList.remove('active');
+        var entries = document.querySelectorAll(".entry");
+        entries.forEach(function (entry) {
+          entry.classList.remove("active");
         });
 
-        storyText.classList.add('active');
+        storyText.classList.add("active");
 
         dayCounter++;
-    }
+      }
 
-    function showPage(url) {
-        document.getElementById('pageFrame').src = url;
-    }
+      function showPage(url) {
+        document.getElementById("pageFrame").src = url;
+      }
 
-    function generateOptions() {
+      function generateOptions() {
         var option1 = "Option 1: Explore the world of random art";
         var option2 = "Option 2: Travel to another place";
 
-        var optionsDiv = document.getElementById('options');
-        optionsDiv.innerHTML = '';
+        var optionsDiv = document.getElementById("options");
+        optionsDiv.innerHTML = "";
 
-        var option1Div = document.createElement('div');
-        option1Div.classList.add('option');
+        var option1Div = document.createElement("div");
+        option1Div.classList.add("option");
         option1Div.innerText = option1;
-        option1Div.onclick = function() {
-            choosePath(1);
+        option1Div.onclick = function () {
+          choosePath(1);
         };
         optionsDiv.appendChild(option1Div);
 
-        var option2Div = document.createElement('div');
-        option2Div.classList.add('option');
+        var option2Div = document.createElement("div");
+        option2Div.classList.add("option");
         option2Div.innerText = option2;
-        option2Div.onclick = function() {
-            choosePath(2);
+        option2Div.onclick = function () {
+          choosePath(2);
         };
         optionsDiv.appendChild(option2Div);
-    }
+      }
 
-    function generateArtDream() {
+      function generateArtDream() {
         var grammar = {
-            "art_intro": ["You decide to explore the world of random art.", "You find yourself drawn to the world of abstract creativity.", "Colors swirl around you as you embark on an artistic adventure."],
-            "artist_encounter": ["As you walk through the colorful landscape, you encounter a mysterious artist.", "A figure emerges from the vibrant hues, inviting you to join them in their creative endeavor.", "A voice calls out to you, inviting you to explore the realm of imagination."],
-            "artist_options": ["They offer you a choice: #art_option1# or #art_option2#"],
-            "art_option1": ["Create a masterpiece together", "Collaborate on an experimental project"],
-            "art_option2": ["Observe their latest creation", "Join them in an art critique"],
-            "art_outcome": ["You feel a sense of accomplishment and wonder.", "The colors blend harmoniously, forming a mesmerizing pattern.", "Your mind is filled with inspiration and creativity."]
+          art_intro: [
+            "You decide to explore the world of random art.",
+            "You find yourself drawn to the world of abstract creativity.",
+            "Colors swirl around you as you embark on an artistic adventure.",
+          ],
+          artist_encounter: [
+            "As you walk through the colorful landscape, you encounter a mysterious artist.",
+            "A figure emerges from the vibrant hues, inviting you to join them in their creative endeavor.",
+            "A voice calls out to you, inviting you to explore the realm of imagination.",
+          ],
+          artist_options: [
+            "They offer you a choice: #art_option1# or #art_option2#",
+          ],
+          art_option1: [
+            "Create a masterpiece together",
+            "Collaborate on an experimental project",
+          ],
+          art_option2: [
+            "Observe their latest creation",
+            "Join them in an art critique",
+          ],
+          art_outcome: [
+            "You feel a sense of accomplishment and wonder.",
+            "The colors blend harmoniously, forming a mesmerizing pattern.",
+            "Your mind is filled with inspiration and creativity.",
+          ],
         };
 
         var tracery = window.tracery;
         var storyGrammar = tracery.createGrammar(grammar);
         var story = [
-            storyGrammar.flatten("#art_intro#"),
-            storyGrammar.flatten("#artist_encounter#"),
-            storyGrammar.flatten("#artist_options#"),
-            storyGrammar.flatten("#art_outcome#")
+          storyGrammar.flatten("#art_intro#"),
+          storyGrammar.flatten("#artist_encounter#"),
+          storyGrammar.flatten("#artist_options#"),
+          storyGrammar.flatten("#art_outcome#"),
         ];
-        return { story: story.join('<br>') };
-    }
+        return { story: story.join("<br>") };
+      }
 
-    generateOptions();
-</script>
-</body>
+      generateOptions();
+    </script>
+  </body>
 </html>
