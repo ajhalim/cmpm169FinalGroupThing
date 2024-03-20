@@ -17,7 +17,7 @@ function draw() {
   textSize(20);
   textFont(message);
   textAlign(CENTER,CENTER);
-  text("scroll to change direction",0,-350);
+  text("scroll to change direction",0,-200);
   // Translate to the center of the screen
   translate(0, 0, -500);
 
