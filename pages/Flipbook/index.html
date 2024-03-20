@@ -428,6 +428,28 @@ function updatePageNumber() {
     "Page " + (currentPageIndex + 1) + ", Day " + dayCounter;
 }
 
+// Define a global variable to store the currently playing audio
+var currentAudio = null;
+
+// Function to play audio with proper handling of overlapping
+function playAudio(audioUrl) {
+  // Check if there's already an audio playing
+  if (currentAudio) {
+    // If so, stop it
+    currentAudio.pause();
+    currentAudio.currentTime = 0; // Reset audio to the beginning
+  }
+
+  // Create a new audio instance
+  var audio = new Audio(audioUrl);
+  // Play the audio
+  audio.play();
+
+  // Update the global variable to reference the currently playing audio
+  currentAudio = audio;
+}
+
+// Function to choose a path and play corresponding audio
 function choosePath(option) {
   var entryContainer = document.getElementById("entry-container");
   var optionsDiv = document.getElementById("options");
@@ -443,13 +465,13 @@ function choosePath(option) {
         showPage(selectedPage.url);
         storyText.classList.add("entry");
         storyText.innerHTML = generateArtDream().story;
-        
+
         // Adding artist button
         var artistButton = document.createElement("span");
         artistButton.classList.add("artist-button");
         artistButton.innerText = "Artist: " + selectedPage.artist;
         artistButton.onclick = function () {
-          window.open(selectedPage.source, '_blank');
+          window.open(selectedPage.source, "_blank");
         };
         storyText.appendChild(artistButton);
       } else {
@@ -465,6 +487,9 @@ function choosePath(option) {
         "url('" + selectedDream.background + "')";
       storyText.classList.add("entry");
       storyText.innerHTML = selectedDream.story;
+
+      // Play audio corresponding to the selected dreamscape
+      playAudio(getAudioForDreamscape(selectedDream.name));
       break;
     default:
       storyText.innerText = "Invalid option!";
@@ -496,6 +521,36 @@ function choosePath(option) {
 
   dayCounter++;
 }
+
+
+// Function to get audio file corresponding to the dreamscape
+function getAudioForDreamscape(dreamscapeName) {
+  switch (dreamscapeName) {
+    case "Underwater Wonderland":
+      return "https://saliao.github.io/p5.js-files/shrxpnel%20%26%20syos%20-%20i%20think%20i%20should%20go.mp3"; // Replace with actual audio URL
+    case "Celestial Journey":
+      return "https://saliao.github.io/p5.js-files/star%20struck.mp3"; // Replace with actual audio URL
+    // Add cases for other dreamscapes
+    case "Fantasy Forest":
+      return "https://saliao.github.io/p5.js-files/regrets%20w%20raynix.mp3";
+    // other
+    case "Surreal Cityscape":
+      return "https://saliao.github.io/p5.js-files/a%20vow%20-%20one%20of%20those%20nights.mp3";
+    case "Timeless Library":
+      return "https://saliao.github.io/p5.js-files/still%20w%20syos.mp3";
+    case "Dreamy Wonderland":
+      return "https://saliao.github.io/p5.js-files/daniel.mp3%20-%20green%20to%20blue%20(Aurenth%20Remake).mp3";
+    case "Haunted Dreamscape":
+      return "https://saliao.github.io/p5.js-files/hold%20me%20tightly.mp3";
+    case "Technological Utopia":
+      return "https://saliao.github.io/p5.js-files/nothing%20feels%20the%20same.mp3";
+    case "Endless Descent":
+      return "https://saliao.github.io/p5.js-files/shallow%20heart.mp3";
+    default:
+      return ""; // Return default audio URL or handle as needed
+  }
+}
+
 
 
 function showPage(url) {
