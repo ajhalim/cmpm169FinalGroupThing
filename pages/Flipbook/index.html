@@ -607,6 +607,8 @@ function generateOptions() {
   option1Div.innerText = option1;
   option1Div.onclick = function () {
     choosePath(1);
+    var audio = new Audio('https://saliao.github.io/p5.js-files/pageturn-102978.mp3');
+    audio.play();
   };
   optionsDiv.appendChild(option1Div);
 
@@ -615,9 +617,12 @@ function generateOptions() {
   option2Div.innerText = option2;
   option2Div.onclick = function () {
     choosePath(2);
+    var audio = new Audio('page_turn.mp3');
+    audio.play();
   };
   optionsDiv.appendChild(option2Div);
 }
+
 
 function generateArtDream() {
   var grammar = {
