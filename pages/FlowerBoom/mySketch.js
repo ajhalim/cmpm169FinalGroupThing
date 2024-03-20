@@ -1,5 +1,5 @@
 //https://openprocessing.org/sketch/1610928
-//Wei-Kai Chen
+//Artist: Wei-Kai Chen
 var flowers = []      // 很多物件組合成一個陣列
 var bee      // 單一物件
 var colorList = ["#d4c685","#f7ef81","#cfe795","#a7d3a6","#add2c2"]
