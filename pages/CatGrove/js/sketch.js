@@ -59,7 +59,7 @@ tabbyskin1 = loadImage('https://saliao.github.io/p5.js-files/tabbysmile1.jpg');
 
 function setup() {
     createCanvas(800, 800, WEBGL);
-  song.play();
+  
 for (let i = 0; i < 5; i++) {
         pointLights.push({
             x: random(-600, 400),
@@ -147,14 +147,8 @@ function mouseClicked() {
 function draw() {
     noStroke();
     background(0);
-   if (song.isPlaying() && song.currentTime() > duration) {
-    // stop the song
-    song.stop();
-    // rewind the song to the beginning
-    song.jump(0);
-    // start playing again
-    song.play();
-  }
+   
+    
     if (orbitalControlEnabled) {
         orbitControl(); 
     } else {
