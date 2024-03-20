@@ -21,6 +21,12 @@ function setup() {
     bgGraphics.ellipse(x, y, size, size);
   }
   bgGraphics.filter(BLUR, 10); // Apply blur effect
+
+  textFont(message);
+  textSize(15);
+  textAlign(CENTER,CENTER);
+  fill(225);
+  text("click to change the speed", 0, 0);
 }
 
 function draw() {
@@ -37,12 +43,6 @@ function draw() {
   translate(-400,0);
   cylinder(30, 600);
   pop();
-  
-  textFont(message);
-  textSize(15);
-  textAlign(CENTER,CENTER);
-  fill(225);
-  text("click to change the speed", -400, -200);
 
   // Draw leaves
   for (let leaf of leaves) {
@@ -102,7 +102,7 @@ class Leaf {
 
 // Event handler for mouse click
 function mouseClicked() {
-  let newSpeed = random(1, 3); // Generate a new random speed
+  let newSpeed = random(1, 10); // Generate a new random speed
   // Change the speed of each leaf
   for (let leaf of leaves) {
     leaf.changeSpeed(newSpeed);
